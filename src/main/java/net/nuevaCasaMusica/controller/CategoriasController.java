@@ -72,25 +72,14 @@ public class CategoriasController {
 		return "redirect:/categorias/indexPaginate";		
 	}
 	
-	/**
-	 * Método para renderizar el formulario para editar una Categoría
-	 * @param idCategoria
-	 * @param model
-	 * @return
-	 */
+
 	@GetMapping("/edit/{id}")
 	public String editar(@PathVariable("id") int idCategoria, Model model) {		
 		Categoria categoria = serviceCategorias.buscarPorId(idCategoria);			
 		model.addAttribute("categoria", categoria);
 		return "categorias/formCategoria";
 	}
-	
-	/**
-	 * Método para eliminar una Categoría de la base de datos
-	 * @param idCategoria
-	 * @param attributes
-	 * @return
-	 */
+
 	@GetMapping("/delete/{id}")
 	public String eliminar(@PathVariable("id") int idCategoria, RedirectAttributes attributes) {
 		

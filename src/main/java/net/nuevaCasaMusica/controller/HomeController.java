@@ -79,7 +79,9 @@ public class HomeController {
                     instrumento.setImagen(nombreImagen);
                 }
             } else {
-                instrumento.setImagen("noImage.jpg");
+                if(instrumento.getImagen() == null) {
+                    instrumento.setImagen("noImage.jpg");
+                }
             }
 
             instrumentosService.guardarInstrumento(instrumento);

@@ -1,7 +1,7 @@
 package net.nuevaCasaMusica.controller;
 
-import net.nuevaCasaMusica.model.Categoria;
 import net.nuevaCasaMusica.model.Instrumento;
+import net.nuevaCasaMusica.service.ICategoriasService;
 import net.nuevaCasaMusica.service.IInstrumentosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,11 +20,11 @@ import java.util.Optional;
 @RequestMapping("/instrumentos")
 public class InstrumentosController {
 
-//    @Autowired
-//    InstrumentosServiceImpl instrumentosServiceImpl;
-
     @Autowired
     IInstrumentosService iInstrumentosService;
+
+    @Autowired
+    private ICategoriasService serviceCategorias;
 
     @GetMapping("/index")
     public String mostrarIndex(Model model) {
@@ -50,8 +50,16 @@ public class InstrumentosController {
     @GetMapping("/edit/{id}")
     public String editar(@PathVariable("id") int idIns, Model model) {
         Optional<Instrumento> instrumento = iInstrumentosService.buscarPorId(idIns);
+        model.addAttribute("categorias", serviceCategorias.buscarTodas());
         model.addAttribute("instrumento", instrumento);
         return "instrumento/altaNuevoInstrumento";
+    }
+
+    @GetMapping("/verProducto/{id}")
+    public String verProducto(@PathVariable("id") int idIns, Model model) {
+        Optional<Instrumento> instrumento = iInstrumentosService.buscarPorId(idIns);
+        model.addAttribute("instrumento", instrumento);
+        return "instrumento/verInstrumento";
     }
 
 
