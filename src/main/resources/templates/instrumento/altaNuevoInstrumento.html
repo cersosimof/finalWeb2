@@ -1,0 +1,96 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>casaMusica</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<header th:insert="fragments/menu :: menu-principal"></header>
+
+<main role="main">
+    <hr>
+    <div class="container">
+
+        <div>
+            <h4><strong>ALTA NUEVO INSTRUMENTO</strong></h4>
+            <div>
+                <form th:action="@{alta}" method="POST" th:object="${instrumento}" enctype="multipart/form-data">
+                    <div style="display: flex;width: 100% !important;flex-direction: row;justify-content: space-evenly; flex-wrap: wrap">
+                        <div style="width: 50%; margin-bottom: 10px; padding: 10px">
+                            <label for="marca" style="width: 100%">Marca</label>
+                            <input type="text" class="form-control" id="marca" th:field="*{marca}" required>
+                            <p th:if="${#fields.hasErrors('marca')}" th:errorclass="error" th:errors="*{marca}"/>
+                        </div>
+
+                        <div style="width: 50%; margin-bottom: 10px; padding: 10px">
+                            <label for="modelo">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" th:field="*{modelo}" required>
+                            <p th:if="${#fields.hasErrors('modelo')}" th:errorclass="error" th:errors="*{modelo}"/>
+                        </div>
+
+                        <div style="width: 33%; margin-bottom: 10px; padding: 10px">
+                            <label for="precio" style="width: 100%">Precio</label>
+                            <input type="text" class="form-control" id="precio" th:field="*{precio}"
+                                   onkeypress="soloNumerosYPuntos(event)" required>
+                            <p th:if="${#fields.hasErrors('precio')}" th:errorclass="error" th:errors="*{precio}"/>
+
+                        </div>
+
+                        <div style="width: 33%; margin-bottom: 10px; padding: 10px">
+                            <label for="tipo" style="width: 100%">Tipo</label>
+                            <select class="form-control" id="tipo" th:field="*{tipo}">
+                                <option value="">-- Seleccione --</option>
+                            <option th:each="categoria : ${categorias}"
+                                    th:value="${categoria.nombre}"
+                                    th:text="${categoria.nombre}">
+                            </option>
+                            </select>
+
+                            <p th:if="${#fields.hasErrors('tipo')}" th:errorclass="error" th:errors="*{tipo}"/>
+                        </div>
+
+                        <div style="width: 33%; margin-bottom: 10px; padding: 10px">
+                            <label for="stock">Stock</label>
+                            <input type="text" class="form-control" id="stock" th:field="*{stock}" onkeypress="solonumeros(event)" required>
+                            <p th:if="${#fields.hasErrors('stock')}" th:errorclass="error" th:errors="*{stock}"/>
+                        </div>
+
+                        <div style="width: 100%; margin-bottom: 10px; padding: 10px">
+
+                            <label for="descripcion" style="text-align: left">Descripci&oacute;n: </label>
+                            <textarea th:field="*{descripcion}" class="form-control" id="descripcion" rows="3"
+                                      style="width: 100%" required></textarea>
+                            <p th:if="${#fields.hasErrors('descripcion')}" th:errorclass="error" th:errors="*{descripcion}"/>
+                        </div>
+
+
+                        <input type="file" name="subidaImagen">
+
+                    </div>
+
+                    <button type="submit" class="btn btn-dark" style="margin-top: 20px; width: 100%;">Alta producto</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:insert="fragments/footer :: pie-pagina" class="footer"></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/altaModifNuevoIns.js}"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<nav th:fragment="menu-principal" class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Casa Musica</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" sec:authorize="hasAnyAuthority('USUARIO','ADMINISTRADOR')">
+                    <a class="nav-link" th:href="@{/alta}">Alta Instrumento</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('SUPERVISOR','ADMINISTRADOR')">
+                    <a class="nav-link" th:href="@{/categorias/indexPaginate}">ABM. Categorías</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR')">
+                    <a class="nav-link" th:href="@{/usuarios/index}">ABM. Usuarios</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR')">
+                    <a class="nav-link" th:href="@{/instrumentos/indexPaginate}">ABM. Instrumentos</a>
+                </li>
+            </ul>
+            <div sec:authorize="isAnonymous()">
+                <a style="cursor: pointer; text-decoration:none; color: black" th:href="@{/index}">Ingresar</a>&nbsp;&nbsp;|&nbsp;
+                <a style="cursor: pointer; text-decoration:none; color: black" th:href="@{/signup}">Registrarse</a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <span>Bienvenido</span>&nbsp;<span class="" sec:authentication="name"></span>&nbsp;
+                <a th:href="@{/logout}" style="cursor: pointer; text-decoration:none; color: black">(Salir)</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+

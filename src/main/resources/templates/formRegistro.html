@@ -1,0 +1,61 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>casaMusica</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<header th:insert="fragments/menu :: menu-principal"></header>
+
+<main role="main">
+    <br>
+    <div class="container">
+        <div>
+            <div>
+                <form th:action="@{/signup}" th:object="${usuario}" style="padding-left: 200px;padding-right: 200px;" method="POST">
+                    <h3 class="text-center">Casa de Musica - Nuevo Usuario</h3>
+                    <div class="form-group">
+                        <label for="nombre" class="" style="color: black">Nombre:</label><br>
+                        <input type="text" class="form-control" th:field="*{nombre}" id="nombre" name="nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="" style="color: black">Correo:</label><br>
+                        <input type="text" class="form-control" th:field="*{email}" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="username" class="" style="color: black">Username:</label><br>
+                        <input type="text" class="form-control" th:field="*{username}" id="username" name="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="" style="color: black">Contraseña:</label><br>
+                        <input type="password" class="form-control" th:field="*{password}" id="password" name="password">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-info btn-md" value="Registrarme" style="width: 100%;padding-top: 5px;margin-top: 17px;border: none;background-color: aquamarine;">
+                    </div>
+
+                    <div id="register-link" class="text-right">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:insert="fragments/footer :: pie-pagina" class="footer"></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

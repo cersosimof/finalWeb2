@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>casaMusica</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<header th:insert="fragments/menu :: menu-principal"></header>
+
+<main role="main">
+
+<!--    &lt;!&ndash; Main jumbotron for a primary marketing message or call to action &ndash;&gt;-->
+<!--    <div class="jumbotron">-->
+<!--        <div class="container">-->
+<!--            <h3>Encuentra el trabajo que andas buscando.</h3>-->
+<!--            Puedes buscar por descripción y categoría.-->
+<!--            <form th:action="@{/search}" th:object="${search}" method="get" class="form-inline">-->
+<!--                <input type="text" th:field="*{descripcion}" class="form-control mb-3"-->
+<!--                       placeholder="Escriba una búsqueda">&nbsp;-->
+<!--                <select th:field="*{categoria.id}" class="custom-select custom-select mb-3">-->
+<!--                    <option th:value="${null}" selected>Seleccione una categoría</option>-->
+<!--                    <option th:each="categoria : ${categorias}"-->
+<!--                            th:value="${categoria.id}"-->
+<!--                            th:text="${categoria.nombre}">-->
+<!--                    </option>-->
+<!--                </select>&nbsp;-->
+
+<!--                <button type="submit" class="btn btn-primary mb-3">Buscar</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div th:if="${msg != null}" class='alert alert-success' th:text="${msg}" role='alert'></div>
+    <div class="container">
+        <br>
+        <h2 class="font-weight-bold text-left text-capitalize">LISTADO DE INSTRUMENTOS</h2>
+
+        <div th:each="lista: ${lista}" onclick="verProducto(this.id)" th:id="'prod_' + ${lista.id}" >
+            <div th:id="'row_' + ${lista.id}"
+                 style="width: 100%; border-top: 1px solid darkgrey; display: flex; cursor: pointer">
+                <div style="width: 25%;display: flex;flex-direction: row;justify-content: center;">
+                    <img th:src="@{/imagenes/{img} (img=${lista.imagen}) }" style="height: 130px">
+                </div>
+                <div style="width: 75%;display: flex;flex-direction: column;justify-content: center;">
+                    <span style="font-size: 25px" th:text="${lista.marca} + ' ' + ${lista.modelo}"/>
+                    <span style="color: green; font-weight: bold; font-size: 20px"
+                          th:text="'$' + '' + ${lista.precio} + '.-'"/>
+                    <span th:text="'Disponemos de ' + ${lista.stock} + ' productos en stock'"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:insert="fragments/footer :: pie-pagina" class="footer"></footer>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

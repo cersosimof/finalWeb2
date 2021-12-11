@@ -1,0 +1,89 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>casaMusica</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header th:insert="fragments/menu :: menu-principal"></header>
+
+<main role="main">
+    <hr>
+    <div class="container">
+
+        <div>
+            <div>
+                <div style="display: flex; justify-content: space-between; width: 100%; background-color: cornflowerblue; color: black;padding: 17px;">
+                    <h4 style=""><strong>Listado de Instrumentos</strong></h4>
+                    <a class="btn btn-light" th:href="@{/alta}" role="button"><i class="fas fa-file" aria-hidden="true"></i> Ingresar Nuevo Instrumentos</a>
+                </div>
+                <div th:if="${msg != null}" class='alert alert-success' th:text="${msg}" role='alert'></div>
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Operaciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="instrumento : ${instrumentos.content}">
+                        <td th:text="${instrumento.id}"></td>
+                        <td th:text="${instrumento.tipo}"></td>
+                        <td th:text="${instrumento.marca}"></td>
+                        <td th:text="${instrumento.modelo}"></td>
+                        <td th:text="${instrumento.descripcion}"></td>
+                        <td th:text="${instrumento.precio}"></td>
+                        <td th:text="${instrumento.imagen}"></td>
+                        <td th:text="${instrumento.stock}"></td>
+                        <td>
+                            <a th:href="@{/instrumentos/delete/{id} (id=${instrumento.id})}" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Eliminar" style="cursor: pointer">
+                                <i class="far fa-trash-alt" aria-hidden="true"></i>
+                            </a>
+                            <a th:href="@{/instrumentos/edit/{id} (id=${instrumento.id})}" class="btn btn-warning btn-sm" role="button" title="Modificar" style="cursor: pointer">
+                                <i class="far fa-edit" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav th:if="${instrumentos.totalPages > 0}" aria-label="Page navigation example" style="display: flex;justify-content: center;">
+                    <ul class="pagination">
+                        <li class="page-item"><a th:href="@{/instrumentos/indexPaginate(page=${instrumentos.number - 1})}" class="page-link">Anterior</a></li>
+                        <li class="page-item"><a th:href="@{/instrumentos/indexPaginate(page=${instrumentos.number + 1})}" class="page-link">Siguiente</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+</main>
+
+<footer th:insert="fragments/footer :: pie-pagina" class="footer"></footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
