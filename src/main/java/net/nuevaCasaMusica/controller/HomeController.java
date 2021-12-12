@@ -1,5 +1,6 @@
 package net.nuevaCasaMusica.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +59,7 @@ public class HomeController {
 
     @GetMapping("/alta")
     public String AltaNuevoInstrumento(@ModelAttribute("instrumento") Instrumento instrumento, Model model) {
-            model.addAttribute("categorias", serviceCategorias.buscarTodas());
+        model.addAttribute("categorias", serviceCategorias.buscarTodas());
         return "instrumento/altaNuevoInstrumento";
     }
 
@@ -79,8 +80,8 @@ public class HomeController {
                     instrumento.setImagen(nombreImagen);
                 }
             } else {
-                if(instrumento.getImagen() == null) {
-                    instrumento.setImagen("noImage.jpg");
+                if (instrumento.getImagen() == null) {
+                    instrumento.setImagen("noImage.png");
                 }
             }
 
@@ -106,7 +107,6 @@ public class HomeController {
 
         if (session.getAttribute("usuario") == null) {
             Usuario usuario = serviceUsuarios.buscarPorUsername(username);
-            //System.out.println("Usuario: " + usuario);
             session.setAttribute("usuario", usuario);
         }
 
@@ -128,16 +128,11 @@ public class HomeController {
     // METODO PARA DAR DE ALTA USUARIO
     @PostMapping("/signup")
     public String guardarRegistro(Usuario usuario, RedirectAttributes attributes) {
-        // Recuperamos el password en texto plano
         String pwdPlano = usuario.getPassword();
-        // Encriptamos el pwd BCryptPasswordEncoder
         String pwdEncriptado = passwordEncoder.encode(pwdPlano);
-        // Hacemos un set al atributo password (ya viene encriptado)
         usuario.setPassword(pwdEncriptado);
-        usuario.setEstatus(1); // Activado por defecto
-        usuario.setFechaRegistro(new Date()); // Fecha de Registro, la fecha actual del servidor
-
-        // Creamos el Perfil que le asignaremos al usuario nuevo
+        usuario.setEstatus(1);
+        usuario.setFechaRegistro(new Date());
         Perfil perfil = new Perfil();
         // TODO: Ver de hacer que el usuario se pueda cambiar
         perfil.setId(3); // Perfil USUARIO
@@ -216,14 +211,11 @@ public class HomeController {
      */
     @ModelAttribute
     public void setGenericos(Model model) {
-//        Vacante vacanteSearch = new Vacante();
-//        vacanteSearch.reset();
-//        model.addAttribute("search", vacanteSearch);
-//        model.addAttribute("vacantes", serviceVacantes.buscarDestacadas());
         model.addAttribute("categorias", serviceCategorias.buscarTodas());
-
-        // el que puse yo
+        model.addAttribute("marcas", instrumentosService.buscarTodasLasMarcas());
         model.addAttribute("lista", instrumentosService.getAllInstrumentos());
+        model.addAttribute("min", instrumentosService.getMinPrecio());
+        model.addAttribute("max", instrumentosService.getMaxPrecio());
     }
 
     /**
@@ -235,4 +227,90 @@ public class HomeController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
+
+    /**
+     * FILTROS CONTROLLER
+     */
+
+    @GetMapping("/filtro/{marca}/{minmax}/{ascdesc}")
+    public String filtros(Model model, HttpServletRequest request, @PathVariable("marca") String marca, @PathVariable("minmax") String minmax, @PathVariable("ascdesc") String ascdesc) {
+
+//    String marcaSeleccionada = request.getParameter("marca");
+//    String parametrosPrecio = request.getParameter("precio");
+//    String orden = request.getParameter("orden");
+
+//    List<Instrumento> listaInstrumentos = new ArrayList<>();
+//
+//    if (marcaSeleccionada != null && parametrosPrecio != null) {
+//        int i = 1;
+//    } else if(marcaSeleccionada != null) {
+//        if(marcaSeleccionada == "") {
+//            listaInstrumentos = instrumentosService.getAllInstrumentos();
+//        } else {
+//            listaInstrumentos = instrumentosService.buscarTodosDeCiertaMarca(marcaSeleccionada);
+//        }
+//    } else if (parametrosPrecio != null) {
+//
+//    }
+
+
+
+        List<Instrumento> listaInstrumentos = new ArrayList<>();
+
+        if(marca.equals("0") && minmax.equals("0") && ascdesc.equals("0")) {
+            // NO HAY NADA SELECCIONADO
+            listaInstrumentos = instrumentosService.getAllInstrumentos();
+        } else if (!marca.equals("0") && minmax.equals("0") && ascdesc.equals("0")) {
+            // SOLO MARCA
+            listaInstrumentos = instrumentosService.buscarTodosDeCiertaMarca(marca);
+        } else if(!marca.equals("0") && !minmax.equals("0") && ascdesc.equals("0")) {
+            // MARCA Y PRECIO
+            double min = Double.parseDouble(minmax.split("-")[0]);
+            double max = Double.parseDouble(minmax.split("-")[1]);
+            listaInstrumentos = instrumentosService.buscarTodosDeCiertaMarcaYRangoPrecio(marca, min, max);
+        } else if(!marca.equals("0") && !minmax.equals("0") && !ascdesc.equals("0")) {
+            // MARCA Y PRECIO Y ASCDESC
+            double min = Double.parseDouble(minmax.split("-")[0]);
+            double max = Double.parseDouble(minmax.split("-")[1]);
+            if(ascdesc.equals("asc")) {
+                listaInstrumentos = instrumentosService.buscarTodosDeCiertaMarcaYRangoPrecioASC(marca, min, max);
+            } else {
+                listaInstrumentos = instrumentosService.buscarTodosDeCiertaMarcaYRangoPrecioDESC(marca, min, max);
+            }
+        } else if(marca.equals("0") && !minmax.equals("0") && !ascdesc.equals("0")) {
+            // PRECIO Y ASCDESC
+            double min = Double.parseDouble(minmax.split("-")[0]);
+            double max = Double.parseDouble(minmax.split("-")[1]);
+
+            if(ascdesc.equals("asc")) {
+                listaInstrumentos = instrumentosService.buscarConRangoASC(min, max);
+            } else {
+                listaInstrumentos = instrumentosService.buscarConRangoDESC(min, max);
+            }
+        } else if (marca.equals("0") && !minmax.equals("0") && ascdesc.equals("0")) {
+            double min = Double.parseDouble(minmax.split("-")[0]);
+            double max = Double.parseDouble(minmax.split("-")[1]);
+            listaInstrumentos = instrumentosService.traerInstrumentosEntrePrecios(min, max);
+        } else if(marca.equals("0") && minmax.equals("0") && !ascdesc.equals("0")) {
+            if(ascdesc.equals("asc")){
+                listaInstrumentos = instrumentosService.traerTodosLosInstrumentosASC();
+            } else if (ascdesc.equals("desc")){
+                listaInstrumentos = instrumentosService.traerTodosLosInstrumentosDESC();
+            }
+        }
+
+        if(!minmax.equals("0")) {
+            model.addAttribute("min", Double.parseDouble(minmax.split("-")[0]));
+            model.addAttribute("max", Double.parseDouble(minmax.split("-")[1]));
+        } else {
+            model.addAttribute("min", instrumentosService.getMinPrecio());
+            model.addAttribute("max", instrumentosService.getMaxPrecio());
+        }
+
+        model.addAttribute("lista", listaInstrumentos);
+
+        model.addAttribute("categorias", serviceCategorias.buscarTodas());
+        return "home";
+    }
+
 }

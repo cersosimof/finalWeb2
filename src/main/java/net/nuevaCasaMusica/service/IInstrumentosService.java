@@ -13,4 +13,7 @@ public interface IInstrumentosService {
     List<Instrumento> buscarTodos();
     Optional<Instrumento> buscarPorId(Integer idIns);
     Page<Instrumento> buscarTodos(Pageable page);
+    List<String> buscarTodasLasMarcas();
+    List<Instrumento> buscarTodosDeCiertaMarca(String marca);
+
 }

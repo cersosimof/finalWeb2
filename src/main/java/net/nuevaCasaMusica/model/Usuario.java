@@ -6,15 +6,7 @@ package net.nuevaCasaMusica.model;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Usuarios")
@@ -30,14 +22,16 @@ public class Usuario {
 	private Integer estatus;
 	private Date fechaRegistro;
 
-	// Relacion ManyToMany (Un usuario tiene muchos perfiles)
-	// Por defecto Fetch es FetchType.LAZY
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "UsuarioPerfil", // tabla intermedia
 			joinColumns = @JoinColumn(name = "idUsuario"), // foreignKey en la tabla de UsuarioPerfil
 			inverseJoinColumns = @JoinColumn(name = "idPerfil") // foreignKey en la tabla de UsuarioPerfil
 	)
 	private List<Perfil> perfiles;
+
+
+	@Transient
+	private String rol;
 
 
 	public Integer getId() {
@@ -110,6 +104,14 @@ public class Usuario {
 			perfiles = new LinkedList<>();
 		}
 		perfiles.add(tempPerfil);
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
 	}
 
 	@Override

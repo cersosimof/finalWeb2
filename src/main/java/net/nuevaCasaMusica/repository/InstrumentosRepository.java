@@ -9,14 +9,31 @@ import java.util.List;
 public interface InstrumentosRepository extends JpaRepository<Instrumento, Integer> {
 
     List<Instrumento> findAllByOrderByPrecioAsc();
+
     List<Instrumento> findAllByOrderByPrecioDesc();
 
     @Query("SELECT marca FROM Instrumento GROUP BY marca")
     List<String> groupMarcas();
 
+//    @Query("SELECT '*' FROM Instrumento WHERE marca = 'Parquer' AND precio BETWEEN 10 AND 200")
+    List<Instrumento> findByMarcaAndPrecioBetween(String marca, double p1, double p2);
+
+    List<Instrumento> findByMarcaAndPrecioBetweenOrderByPrecioAsc(String marca, double p1, double p2);
+
+    List<Instrumento> findByMarcaAndPrecioBetweenOrderByPrecioDesc(String marca, double p1, double p2);
+
     List<Instrumento> findByMarca(String marca);
 
-    List<Instrumento> findByPrecioBetween(double p1, double p2);
+    List<Instrumento> findByPrecioBetweenOrderByPrecioAsc(Double p1, Double p2);
+    List<Instrumento> findByPrecioBetweenOrderByPrecioDesc(Double p1, Double p2);
 
 
+    List<Instrumento> findByPrecioBetween(Double s, Double s1);
+
+
+    @Query(" SELECT MAX(precio) FROM Instrumento")
+    double getMaxPrecio();
+
+    @Query(" SELECT Min(precio) FROM Instrumento")
+    double getMinPrecio();
 }

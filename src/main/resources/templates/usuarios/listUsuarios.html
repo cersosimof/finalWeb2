@@ -20,7 +20,10 @@
     <div class="container">
 
         <div>
-            <h4><strong>Listado de Usuarios</strong></h4>
+            <div style="display: flex; justify-content: space-between; width: 100%; background-color: cornflowerblue; color: black;padding: 17px;">
+                <h4 style=""><strong>Listado de Usuarios</strong></h4>
+                <a class="btn btn-light" th:href="@{/usuarios/crearNuevoUsuario}" role="button"><i class="fas fa-file" aria-hidden="true"></i> Nuevo Usuario</a>
+            </div>
             <div>
                 <br>
                 <div th:if="${msg != null}" class='alert alert-success' th:text="${msg}" role='alert'></div>
@@ -47,7 +50,7 @@
                             <a th:href="@{/usuarios/delete/{id} (id=${usuario.id})}" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Eliminar" style="cursor: pointer">
                                 <i class="far fa-trash-alt" aria-hidden="true"></i>
                             </a>
-                            <a class="btn btn-warning btn-sm" role="button" title="Modificar" style="cursor: pointer">
+                            <a th:href="@{/usuarios/edit/{id} (id=${usuario.id})}" class="btn btn-warning btn-sm" role="button" title="Modificar" style="cursor: pointer">
                                 <i class="far fa-edit" aria-hidden="true"></i>
                             </a>
                         </td>

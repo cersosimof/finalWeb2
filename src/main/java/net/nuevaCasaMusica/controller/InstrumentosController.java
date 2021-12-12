@@ -58,7 +58,15 @@ public class InstrumentosController {
     @GetMapping("/verProducto/{id}")
     public String verProducto(@PathVariable("id") int idIns, Model model) {
         Optional<Instrumento> instrumento = iInstrumentosService.buscarPorId(idIns);
-        model.addAttribute("instrumento", instrumento);
+
+        List<Instrumento> listaInstrumentos = iInstrumentosService.buscarTodos();
+
+        for (Instrumento i : listaInstrumentos) {
+            if(i.getId() == idIns){
+                model.addAttribute("producto", i);
+            }
+        }
+
         return "instrumento/verInstrumento";
     }
 

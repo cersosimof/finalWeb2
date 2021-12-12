@@ -73,4 +73,54 @@ public class InstrumentoServiceJpa implements IInstrumentosService {
     public Page<Instrumento> buscarTodos(Pageable page) {
         return IR.findAll(page);
     }
+
+    @Override
+    public List<String> buscarTodasLasMarcas() {
+        return IR.groupMarcas();
+    }
+
+    @Override
+    public List<Instrumento> buscarTodosDeCiertaMarca(String marca) {
+        return IR.findByMarca(marca);
+    }
+
+    public List<Instrumento> traerInstrumentosEntrePrecios(Double s, Double s1) {
+        return IR.findByPrecioBetween(s, s1);
+    }
+
+    public List<Instrumento> traerTodosLosInstrumentosASC() {
+        return IR.findAllByOrderByPrecioAsc();
+    }
+
+    public List<Instrumento> traerTodosLosInstrumentosDESC() {
+        return IR.findAllByOrderByPrecioDesc();
+    }
+
+    public List<Instrumento> buscarTodosDeCiertaMarcaYRangoPrecio(String marca, Double s, Double s1) {
+        return IR.findByMarcaAndPrecioBetween(marca, s, s1);
+    }
+
+    public List<Instrumento> buscarTodosDeCiertaMarcaYRangoPrecioASC(String marca, double s, double s1) {
+        return IR.findByMarcaAndPrecioBetweenOrderByPrecioAsc(marca, s, s1);
+    }
+
+    public List<Instrumento> buscarTodosDeCiertaMarcaYRangoPrecioDESC(String marca, double s, double s1) {
+        return IR.findByMarcaAndPrecioBetweenOrderByPrecioDesc(marca, s, s1);
+    }
+
+    public List<Instrumento> buscarConRangoASC(double min, double max) {
+        return IR.findByPrecioBetweenOrderByPrecioAsc(min, max);
+    }
+
+    public List<Instrumento> buscarConRangoDESC(double min, double max) {
+        return IR.findByPrecioBetweenOrderByPrecioDesc(min, max);
+    }
+
+    public double getMinPrecio() {
+        return IR.getMinPrecio();
+    }
+
+    public double getMaxPrecio() {
+        return IR.getMaxPrecio();
+    }
 }
