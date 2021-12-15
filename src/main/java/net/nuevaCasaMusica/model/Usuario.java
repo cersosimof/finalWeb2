@@ -22,12 +22,12 @@ public class Usuario {
 	private Integer estatus;
 	private Date fechaRegistro;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinTable(name = "UsuarioPerfil", // tabla intermedia
 			joinColumns = @JoinColumn(name = "idUsuario"), // foreignKey en la tabla de UsuarioPerfil
 			inverseJoinColumns = @JoinColumn(name = "idPerfil") // foreignKey en la tabla de UsuarioPerfil
 	)
-	private List<Perfil> perfiles;
+	private Perfil perfiles;
 
 
 	@Transient
@@ -90,21 +90,21 @@ public class Usuario {
 		this.fechaRegistro = fechaRegistro;
 	}
 
-	public List<Perfil> getPerfiles() {
+	public Perfil getPerfiles() {
 		return perfiles;
 	}
 
-	public void setPerfiles(List<Perfil> perfiles) {
+	public void setPerfiles(Perfil perfiles) {
 		this.perfiles = perfiles;
 	}
 	
-	// Metodo para agregar perfiles
-	public void agregar(Perfil tempPerfil) {
-		if (perfiles == null) {
-			perfiles = new LinkedList<>();
-		}
-		perfiles.add(tempPerfil);
-	}
+//	// Metodo para agregar perfiles
+//	public void agregar(Perfil tempPerfil) {
+//		if (perfiles == null) {
+//			perfiles = new LinkedList<>();
+//		}
+//		perfiles.add(tempPerfil);
+//	}
 
 	public String getRol() {
 		return rol;

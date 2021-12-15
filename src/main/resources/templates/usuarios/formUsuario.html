@@ -55,7 +55,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="newUserPass">Contraseña</label>
-                                <input type="password" class="form-control" th:field="*{password}" id="newUserPass"></input>
+                                <input type="password" class="form-control" th:field="*{password}" id="newUserPass" placeholder="ingrese contraseña"></input>
                             </div>
                         </div>
                     </div>
@@ -65,8 +65,8 @@
                             <div class="form-group">
                                 <label for="newUserPass">Rol</label>
                                 <select type="password" class="form-control" th:field="*{rol}" id="newUserRol">
-                                    <option value="3" th:selected="(*{perfiles.get(0).id} == '3')" >Usuario</option>
-                                    <option value="2" th:selected="(*{perfiles.get(0).id} == '2')" >Administrador</option>
+                                    <option value="3" >Usuario</option>
+                                    <option value="2" >Administrador</option>
                                 </select>
                             </div>
                         </div>

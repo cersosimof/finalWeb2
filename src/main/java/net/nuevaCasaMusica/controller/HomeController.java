@@ -136,7 +136,7 @@ public class HomeController {
         Perfil perfil = new Perfil();
         // TODO: Ver de hacer que el usuario se pueda cambiar
         perfil.setId(3); // Perfil USUARIO
-        usuario.agregar(perfil);
+        usuario.setPerfiles(perfil);
         serviceUsuarios.guardar(usuario);
 
         attributes.addFlashAttribute("msg", "Bienvenido " + usuario.getNombre() + ", ingresar para ver todas las opciones.");

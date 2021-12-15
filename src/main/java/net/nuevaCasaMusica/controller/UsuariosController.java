@@ -65,20 +65,18 @@ public class UsuariosController {
 		usuario.setFechaRegistro(new Date());
 		Perfil perfil = new Perfil();
 		perfil.setId(Integer.parseInt(usuario.getRol()));
-		usuario.agregar(perfil);
+		usuario.setPerfiles(perfil);
 		serviceUsuarios.guardar(usuario);
-
-
 
 		attributes.addFlashAttribute("msg", "Los datos del usuario fueron guardados!");
 
-		//return "redirect:/categorias/index";
 		return "redirect:/usuarios/index";
 	}
 
 	@GetMapping("/edit/{id}")
 	public String editar(@PathVariable("id") int idUser, Model model) {
 		Usuario user = serviceUsuarios.buscarPorId(idUser);
+		user.setRol(user.getPerfiles().getId().toString());
 		model.addAttribute("usuario", user);
 		return "usuarios/formUsuario";
 	}
